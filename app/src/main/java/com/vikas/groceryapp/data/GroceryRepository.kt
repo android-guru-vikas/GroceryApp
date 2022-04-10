@@ -27,17 +27,14 @@ import javax.inject.Inject
 class GroceryRepository @Inject constructor(private val service: APIService) {
 
     fun getGroceryItems(query: String): Flow<PagingData<Record>> {
-//        return Pager(PagingConfig(pageSize = 20)) {
-//            GroceryPagingSource(service, query)
-//        }.flow
 
         return Pager(
-            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
+            config = PagingConfig(enablePlaceholders = false, pageSize = NETWORK_PAGE_SIZE),
             pagingSourceFactory = { GroceryPagingSource(service, query) }
         ).flow
     }
 
     companion object {
-        private const val NETWORK_PAGE_SIZE = 3
+        private const val NETWORK_PAGE_SIZE = 10
     }
 }

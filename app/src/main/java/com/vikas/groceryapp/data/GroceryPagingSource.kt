@@ -34,15 +34,13 @@ class GroceryPagingSource(
         return try {
             val response = service.getGrocery(RESOURCE_INDEX, query, page, RESPONSE_ITEM_LIMIT)
             val grocery = response.records
-            Log.d("TAG", "Inside load completed : ${grocery.toString()}")
 
             LoadResult.Page(
                 data = grocery,
-                prevKey = null,
-                nextKey = page + 10
+                prevKey = if (page == GROCERY_STARTING_PAGE_INDEX) null else page - 1,
+                nextKey = if (grocery.isEmpty()) null else page + 1
             )
         } catch (exception: Exception) {
-            Log.d("TAG", "Inside load error : $exception")
             LoadResult.Error(exception)
         }
     }

@@ -1,22 +1,5 @@
-/*
- * Copyright 2018 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.vikas.groceryapp.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -25,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vikas.groceryapp.data.Record
 import com.vikas.groceryapp.databinding.LayoutGroceryItemsBinding
 
-class GroceryListAdapter : PagingDataAdapter<Record, GroceryListAdapter.GroceryViewHolder>(GroceryDiffCallBack()) {
+class GroceryListAdapter :
+    PagingDataAdapter<Record, GroceryListAdapter.GroceryViewHolder>(GroceryDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroceryViewHolder {
-        Log.d("TAG", "Inside onCreateViewHolder ")
         return GroceryViewHolder(
             LayoutGroceryItemsBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -39,7 +22,6 @@ class GroceryListAdapter : PagingDataAdapter<Record, GroceryListAdapter.GroceryV
     }
 
     override fun onBindViewHolder(holder: GroceryViewHolder, position: Int) {
-        Log.d("TAG", "Inside onBindViewHolder : $position")
         val photo = getItem(position)
         if (photo != null) {
             holder.bind(photo)
@@ -51,10 +33,13 @@ class GroceryListAdapter : PagingDataAdapter<Record, GroceryListAdapter.GroceryV
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Record) {
-            Log.d("TAG", "Inside bind : ${item.commodity}")
             binding.apply {
                 grocery = item
-                priceTv.text = grocery?.modal_price
+                tvState.text = grocery?.state
+                tvDistrict.text = grocery?.district
+                tvMarket.text = grocery?.market
+                tvCommodity.text = grocery?.commodity
+                tvPrice.text = grocery?.max_price
                 executePendingBindings()
             }
         }

@@ -15,6 +15,8 @@ class GroceryApp : Application() {
     companion object {
         private var instance: GroceryApp? = null
 
+        //Not being used
+        //For future use only
         @Synchronized
         fun getInstance(): GroceryApp? {
             if (instance != null) return instance

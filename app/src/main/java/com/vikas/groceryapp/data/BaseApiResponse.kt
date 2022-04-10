@@ -3,6 +3,9 @@ package com.vikas.groceryapp.data
 import com.vikas.groceryapp.utilities.NetworkResult
 import retrofit2.Response
 
+//TODO
+//Can be used to improve network handling
+//Skipping that due to lack of time
 abstract class BaseApiResponse {
 
     suspend fun <T> safeApiCall(apiCall: suspend () -> Response<T>): NetworkResult<T> {

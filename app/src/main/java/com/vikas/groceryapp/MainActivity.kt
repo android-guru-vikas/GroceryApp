@@ -1,12 +1,12 @@
 package com.vikas.groceryapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.vikas.groceryapp.adapters.GroceryListAdapter
-import com.vikas.groceryapp.databinding.ActivityMainBinding
+import com.vikas.groceryapp.utilities.KEY_SEARCH_QUERY
 import com.vikas.groceryapp.viewmodels.GroceryListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -16,25 +16,24 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
     private val viewModel: GroceryListViewModel by viewModels()
-    private var searchJob: Job? = null
+    private var fetchJob: Job? = null
     private val adapter = GroceryListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(R.layout.activity_main)
 
-        binding.groceryItemsRv.adapter = adapter
-
-        search("")
+        findViewById<RecyclerView>(R.id.groceryItemsRv).adapter = adapter
+        //TODO
+        //Filter query can be passed from here
+        //Skipping that due to lack of time
+        fetchGroceries(KEY_SEARCH_QUERY)
     }
 
-    private fun search(query: String) {
-        searchJob?.cancel()
-        Log.d("TAG", "Inside search")
-
-        searchJob = lifecycleScope.launch {
+    private fun fetchGroceries(query: String) {
+        fetchJob?.cancel()
+        fetchJob = lifecycleScope.launch {
             viewModel.getGroceries(query).collectLatest {
                 adapter.submitData(it)
             }
